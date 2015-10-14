@@ -1,4 +1,12 @@
-## Function which simulates a spin of the five X circle
+## Function which simulates a spin of the X circle
+tenXCircle <- function(...){
+    random <- sample(1:17,1)
+    if(random ==1 ) {result <- 10}
+    else if(random %in% c(5,14) ) {result <- 2}
+    else if(random %in% c(8,11) ) {result <- 1.35}
+    else {result <- 0}
+    return(result)
+}
 fiveXCircle <- function(...){
     random <- sample(1:17,1)
     if(random ==1 ) {result <- 5}
@@ -7,10 +15,30 @@ fiveXCircle <- function(...){
     else {result <- 0}
     return(result)
 }
+threeXCircle <- function(...){
+    random <- sample(1:17,1)
+    if(random ==1 ) {result <- 3}
+    else if(random %in% c(3,6,8,16) ) {result <- 1.5}
+    else if(random %in% c(10) ) {result <- 1.2}
+    else if(random %in% c(12) ) {result <- 1.25}
+    else if(random %in% c(5,14) ) {result <- 2}
+    else {result <- 0}
+    return(result)
+}
+
+twoXCircle <- function(...){
+    random <- sample(1:17,1)
+    if(random ==1 ) {result <- 0.7}
+    else if(random %in% c(2,4,6,8,10,12,14,16) ) {result <- 2}
+    else {result <- 0}
+    return(result)
+}
+
 
 #A Quick test on the fiveXCircle function
 #A large number of simulations should result in expected value of close to 0.9823529412
-#sum(sapply(1:1000,fiveXCircle))/1000
+#sum(sapply(1:100000,threeXCircle))/100000
+#sum(sapply(1:100000,fiveXCircle))/100000
 
 
 ## Function which takes a starting pot and bets
@@ -20,7 +48,7 @@ fiveXCircle <- function(...){
 ## fraction is fraction of the original pot to revet to upon a win
 #start_pot = 100
 
-martingale_simulation <- function( stopping_time=5 , fraction=0.01, debug=FALSE, return_vector=FALSE, ...) {
+martingale_simulation <- function( stopping_time=5 , fraction=0.01, debug=FALSE, return_vector=FALSE, circle=fiveXCircle, ...) {
     pot <- start_pot
     pot_vector <- 0
     start_wager <- start_pot*fraction
@@ -33,7 +61,7 @@ martingale_simulation <- function( stopping_time=5 , fraction=0.01, debug=FALSE,
         else {
             wager <- min(2 * wager, pot)
         }
-        winnings <- wager*fiveXCircle()
+        winnings <- wager*circle()
         if( winnings > 0 ) { ## This could also be greater than wager
             last_play_win <- TRUE
         }
